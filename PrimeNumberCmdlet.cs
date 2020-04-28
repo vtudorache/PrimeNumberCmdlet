@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Management.Automation;
 
-namespace VTSW.Automation.PrimeNumber
+namespace PrimeNumber
 {
 
     internal class PrimeNumberHelper
