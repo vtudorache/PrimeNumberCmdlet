@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Management.Automation;
 
-namespace PrimeNumber
+namespace Garnet.PowerShell.Series
 {
 
-    internal class PrimeNumberHelper
+    internal class PrimeHelper
     {
         private static List<UInt64> _list = new List<UInt64>();
 
@@ -68,27 +68,27 @@ namespace PrimeNumber
         public static UInt64[] GetRange(UInt64 lower, UInt64 upper)
         {
             if (upper < lower) return null;
-            List<UInt64> r_list = new List<UInt64>();
+            List<UInt64> result = new List<UInt64>();
             CalcToNextAfter(upper);
             foreach (var p in _list)
             {
-                if ((p >= lower) && (p < upper)) r_list.Add(p);
+                if ((p >= lower) && (p < upper)) result.Add(p);
             }
-            return r_list.ToArray();
+            return result.ToArray();
         }
     }
 
     [Cmdlet(VerbsCommon.Get,"PrimeNumberArray")]
     [OutputType(typeof(UInt64[]))]
     [CmdletBinding()]
-    public class PrimeNumberArrayCmdlet : Cmdlet
+    public class PrimeNumberArrayCommand : Cmdlet
     {
         private UInt64 _lowerLimit = 1;
         private UInt64 _upperLimit = 3;
 
         protected override void ProcessRecord()
         {
-            WriteObject(PrimeNumberHelper.GetRange(_lowerLimit, _upperLimit));
+            WriteObject(PrimeHelper.GetRange(_lowerLimit, _upperLimit), true);
         }
 
         [Parameter(Position = 1, ValueFromPipeline = true)]
@@ -109,13 +109,13 @@ namespace PrimeNumber
     [Cmdlet(VerbsCommon.Get, "NextPrimeNumber")]
     [OutputType(typeof(UInt64))]
     [CmdletBinding()]
-    public class NextPrimeNumberCmdlet : PSCmdlet
+    public class NextPrimeNumberCommand : Cmdlet
     {
         private UInt64 _lowerLimit = 1;
 
         protected override void ProcessRecord()
         {
-            WriteObject(PrimeNumberHelper.GetNextAfter(_lowerLimit));
+            WriteObject(PrimeHelper.GetNextAfter(_lowerLimit));
         }
 
         [Parameter(Position = 1, ValueFromPipeline = true)]
@@ -129,13 +129,13 @@ namespace PrimeNumber
     [Cmdlet(VerbsCommon.Get, "LastPrimeNumber")]
     [OutputType(typeof(UInt64))]
     [CmdletBinding()]
-    public class LastPrimeNumberCmdlet : PSCmdlet
+    public class LastPrimeNumberCommand : Cmdlet
     {
         private UInt64 _upperLimit = 1;
 
         protected override void ProcessRecord()
         {
-            WriteObject(PrimeNumberHelper.GetLastBefore(_upperLimit));
+            WriteObject(PrimeHelper.GetLastBefore(_upperLimit));
         }
 
         [Parameter(Mandatory = true, Position = 1, ValueFromPipeline = true)]
